@@ -1,7 +1,7 @@
 import pandas as pd
 from os import path
 from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import precision_score, recall_score, confusion_matrix
 import numpy as np
@@ -27,10 +27,23 @@ def doStratifiedShuffleSplit(data, stratifying_attribute, label_attribute):
 
 
 def doEncodeTextData(data):
+
+    new_data = pd.DataFrame()
+
     for c in data.columns:
 
+
         encoder = LabelEncoder()
+        encoder2 = OneHotEncoder()
         data[c] = encoder.fit_transform(data[c])
+        if(c == "Class"):
+            new_data = pd.concat([new_data, data["Class"]], axis=1)
+            continue
+        column_ohe = (encoder2.fit_transform(data[c].values.reshape(-1,1)).toarray())
+        dfOneHot = pd.DataFrame(column_ohe, columns = [c+" "+str(int(i)) for i in range(column_ohe.shape[1])])
+        new_data = pd.concat([new_data, dfOneHot], axis=1)
+
+    return new_data
 
 
 def createClassificator(train, train_labels):

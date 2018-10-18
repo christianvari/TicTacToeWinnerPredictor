@@ -4,11 +4,10 @@ from tictactoe_functions import *
 DATA_PATH = "./ticTacToeDataset.txt"
 
 data = getData(DATA_PATH)
-doEncodeTextData(data)
+data = doEncodeTextData(data)
 
 # Divido training e test set
-train_set, test_set, train_label_set, test_label_set = doStratifiedShuffleSplit(
-    data, "Class", "Class")
+train_set, test_set, train_label_set, test_label_set = doStratifiedShuffleSplit(data, "Class", "Class")
 
 train_label_set = (train_label_set == 1)
 test_label_set = (test_label_set == 1)
