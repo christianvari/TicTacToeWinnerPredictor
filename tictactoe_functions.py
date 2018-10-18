@@ -3,6 +3,7 @@ from os import path
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import SGDClassifier
+from sklearn.metrics import precision_score, recall_score, confusion_matrix
 import numpy as np
 
 
@@ -41,3 +42,9 @@ def createClassificator(train, train_labels):
 def doPredictions(data, classificatore):
     array = np.array(data)
     return classificatore.predict(array)
+
+def printMetrics(label, prediction):
+    print("Stampo la matrice di confusione:\n", confusion_matrix(label, prediction))
+    print("Precisione : ", precision_score(label, prediction))
+    print("Recall : ", recall_score(label, prediction))
+
